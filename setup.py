@@ -18,7 +18,7 @@ setup(name='dish',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          # -*- Extra requirements: -*-
+          'eventlet',
       ],
       entry_points="""
       # -*- Entry points: -*-
