@@ -19,7 +19,8 @@ class DSMNode(object):
         current = self._data.get(key, (None, 0, 0))
         if item[1:] > current[1:]:
             self._data[key] = item
-        return 'OK'
+            current = item
+        return current
     
     def __repr__(self):
         return "{}::{}".format(id(self), json.dumps(self._data))
@@ -34,17 +35,21 @@ def serve_node(host, port):
         print repr(node)
         data, address = sock.recvfrom(4096)
         message = json.loads(data)
-        operation = getattr(node, message[1])
+        operation_name = message[1]
+        operation = getattr(node, operation_name)
         if operation:
             key, item = message[2], tuple(message[3] or [])
             result = operation(key, item)
             response = Response(message[0], result)
             sock.sendto(json.dumps(response), address)
-        elif message['command'] == 'exit':
+        elif operation_name == 'exit':
             break
 
 
-if __name__ == '__main__':
+def main():
     host = sys.argv[1]
     port = sys.argv[2]
     serve_node(host, port)
+    
+if __name__ == '__main__':
+    main()

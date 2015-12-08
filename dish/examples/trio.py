@@ -20,23 +20,23 @@ def main():
 
     actor = DSMActor(("", BASE_PORT), nodes, UDPMessenger)
     
-    def _step_5(value):
+    def _step_5(key, value):
         print datetime.datetime.now()
         print "read 2 result:{}".format(value)
         actor.write("voter.2", "Steve Ullman", lambda key, result: None)
 
-    def _step_4(key, result):
+    def _step_4(key, value):
         print datetime.datetime.now()
         print "Step 4"
         actor.read("voter.1", _step_5)
         
-    def _step_3(value):
+    def _step_3(key, value):
         print datetime.datetime.now()
         print "Step 3"
         print "read 1 result: {}".format(value)
         actor.write("voter.1", "Laura Bondi", _step_4)
     
-    def _step_2(key, result):
+    def _step_2(key, value):
         print datetime.datetime.now()
         print "Step 2"
         actor.read("voter.1", _step_3)

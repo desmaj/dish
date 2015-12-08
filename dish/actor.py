@@ -2,7 +2,7 @@
 
     The actor is the intelligent portion of our DSM implementation. The nodes
     are just network-enabled dictionaries, it is the actor that knows how to
-    perform the replication 
+    perform the replication.
 """
 import itertools
 import math
@@ -111,12 +111,12 @@ class DSMActor(object):
     def _propagate(self, callback):
         def _complete(key, item):
             def _do_callback(key, result):
-                callback(item)
+                callback(key, result)
             self._write(key, item, _do_callback)
         return _complete
     
     def write(self, key, value, callback):
-        def _increment_tag_and_write(item):
+        def _increment_tag_and_write(key, item):
             old_value, tag, creator = item
             new_item = Item(value, tag+1, self._id)
             self._write(key, new_item, callback)
